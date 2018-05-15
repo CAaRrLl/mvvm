@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>MVVM TEST</title>
+        <script src="./js/util.js"></script>
+        <script src="./js/submanager.js"></script>
+        <script src="./js/subscriber.js"></script>
+        <script src="./js/observer.js"></script>
+        <script src="./js/compile.js"></script>
+        <script src="./js/mvvm.js"></script>
+    </head>
+    <body>
+        <div id="mvvm-app">
+            <h1>{{text}}</h1>
+            <span>{{getSum}}</span>
+            <button v-on:click="addSum">Add</button>
+            <br><br>
+            <label>用户名 <input v-model="username"></label>
+            <p>{{username}}</p>
+            <input v-model='nums.left'> + <input v-model='nums.right'> = <span>{{add}}</span>
+        </div>
+        <script>
+            var mvvm = new MVVM({
+                el: '#mvvm-app',
+                data: {
+                    text: '1加到100',
+                    num: 100,
+                    username: '纪念品',
+                    nums: {
+                        left: 56,
+                        right: 62
+                    }
+                },
+                computed: {
+                    getSum: function() {
+                        return this.text + ' = ' + this.sum;
+                    },
+                    sum: function() {
+                        var sum = [];
+                        for(var i=1;i<=this.num;i++) {
+                            sum.push(i);
+                        }
+                        return sum.reduce(function(p, c) {
+                            return p+c;
+                        });
+                    },
+                    add:function() {
+                        return Number(this.nums.left) + Number(this.nums.right);
+                    }
+                },
+                method: {
+                    addSum: function() {
+                        this.num++;
+                        this.text = this.text.substr(0, 3) + this.num;
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
